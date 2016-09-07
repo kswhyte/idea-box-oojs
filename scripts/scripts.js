@@ -14,13 +14,12 @@ $('#body-input').keypress(function(event) {
 
 function saveIdea(titleInput, bodyInput) {
   var newIdea = '<li><h3> class="idea-title"' + titleInput + '</h3>' + '<button class="remove-idea">x</button><break><p class="body-input">' + bodyInput + '</p><break>';
-  debugger;
   addIdeaToList(newIdea);
   $('#title-input').focus();
 }
 
 function addIdeaToList(newIdea) {
-  $('idea-list').append(newIdea);
+  $('.idea-list').prepend(newIdea);
 }
 
 //
