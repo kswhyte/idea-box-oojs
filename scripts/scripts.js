@@ -1,14 +1,33 @@
-function createSiteLink(urlInput) {
+$('#save-button').on('click', function() {
   var titleInput = $('#title-input').val();
-  var siteLink = '<li><a class="new-url-link" target="_blank" href="http://' + urlInput + '">' + titleInput + '</a><button class="mark-as-read-button">Mark as Read</button><button class="remove-link-button""mark-as-read-button">X</li>'
-  addToLinkList(siteLink);
+  var bodyInput = $('#body-input').val();
+  saveIdea(titleInput, bodyInput);
+});
+
+$('#body-input').keypress(function(event) {
+  if (event.which == 13) {
+    var titleInput = $('#title-input').val();
+    var bodyInput = $('#body-input').val();
+    saveIdea(titleInput, bodyInput);
+  }
+});
+
+function saveIdea(titleInput, bodyInput) {
+  var newIdea = '<li><h3> class="idea-title"' + titleInput + '</h3>' + '<button class="remove-idea">x</button><break><p class="body-input">' + bodyInput + '</p><break>';
+  debugger;
+  addIdeaToList(newIdea);
   $('#title-input').focus();
 }
 
-$('.linked-list').on('click', '.new-url-link', markAsRead);
-
-function addToLinkList(siteLink) {
-  $('.linked-list').append(siteLink);
-  clearFields();
-  countTotals();
+function addIdeaToList(newIdea) {
+  $('idea-list').append(newIdea);
 }
+
+//
+// $('.linked-list').on('click', '.new-url-link', markAsRead);
+//
+// function addToLinkList(siteLink) {
+//   $('.linked-list').append(siteLink);
+//   clearFields();
+//   countTotals();
+// }
