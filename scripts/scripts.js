@@ -50,7 +50,12 @@ function clearFields() {
   $('#search-bar').val('');
 }
 
+function deleteIdea(idea){
+  localStorage.removeItem(idea);
+}
+
 $('.idea-list').on('click', '.delete-idea', function() {
+  deleteIdea(); //need to access value of id and remove it from array
   $(this).parent().remove();
 });
 
@@ -60,14 +65,16 @@ $('.idea-list').on('click', '.upvote', function() {
     $(this).siblings('.quality-control').text('quality: plausible');
   } else if ($('.quality-control').text('quality: plausible')) {
     $(this).siblings('.quality-control').text('quality: genius');
-  }
+  } //will not change to genius from plausible
 });
 
-// $('.idea-list').on('click', '#downvote', function() {
-//   $(this).sibling('.vote').child(quality-control).innerText('quality: plausible');
-//   $(this).sibling('.vote').child(quality-control).innerText('quality: swill');
-// });
-
+$('.idea-list').on('click', '.downvote', function() {
+  if ($('.quality-control').text('quality: genius')) {
+    $(this).siblings('.quality-control').text('quality: plausible');
+  } else if ($('.quality-control').text('quality: plausible')) {
+    $(this).siblings('.quality-control').text('quality: swill');
+  }
+});
 
 
 
