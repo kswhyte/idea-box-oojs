@@ -1,33 +1,46 @@
+var ideasList = [];
+
+function Idea(title, body) {
+  this.title = title;
+  this.body = body;
+  this.id = Date.now();
+  this.quality = 'swill';
+}
+
 $('#save-button').on('click', function() {
   var titleInput = $('#title-input').val();
   var bodyInput = $('#body-input').val();
-  saveIdea(titleInput, bodyInput);
+  generateNewIdea(titleInput, bodyInput);
 });
 
 $('#body-input').keypress(function(event) {
   if (event.which == 13) {
     var titleInput = $('#title-input').val();
     var bodyInput = $('#body-input').val();
-    saveIdea(titleInput, bodyInput);
+    generateNewIdea(titleInput, bodyInput);
   }
 });
 
-function saveIdea(titleInput, bodyInput) {
-  var newIdea = '<li><h3> class="idea-title"' + titleInput + '</h3>' + '<button class="remove-idea">x</button><break><p class="body-input">' + bodyInput + '</p><break>';
-  debugger;
-  addIdeaToList(newIdea);
-  $('#title-input').focus();
+function getIdeaInput() {
+  var titleInput = $('#title-input').val();
+  var bodyInput = $('#body-input').val();
+  storeIdea(titleInput, bodyInput);
 }
 
-function addIdeaToList(newIdea) {
-  $('idea-list').append(newIdea);
+function storeIdea(titleInput, bodyInput) {
+  localStorage.setItem('ideasList', JSON.stringify(ideas));
 }
 
-//
-// $('.linked-list').on('click', '.new-url-link', markAsRead);
-//
-// function addToLinkList(siteLink) {
-//   $('.linked-list').append(siteLink);
-//   clearFields();
-//   countTotals();
-// }
+function generateNewIdea(titleInput, bodyInput) {
+  var idea = new Idea(titleInput, bodyInput);
+  ideasList.unshift(idea);
+  renderIdeaToPage(idea);
+}
+
+function renderIdeaToPage(idea) {
+  $('.idea-list').prepend('<li><h3 class="idea-title">' + idea.title + '</h3>' + '<button class="remove-idea"> x </button><break><p class="body-input">' + idea.body + '</p><break><section class="vote"><img id="upvote" src="./images/svg-images/upvote.svg" /><img id="down-vote" src="./images/svg-images/downvote.svg" /><p>quality:</p>' + idea.quality + '</section><break>');
+}
+
+//To DO:
+// get the array out of local storage on page load
+// write any ideas in the array to page on load
