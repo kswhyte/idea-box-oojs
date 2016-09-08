@@ -4,30 +4,63 @@ body {
 
 header {
   background-color: #E5F3F2
-  /*height: 150px;*/
+  height: 150px;
 }
 
 header h1, span {
   font-family: 'Roboto Slab', serif;
   font-weight: 700;
   font-size: 50px;
+  text-align: center;
+  /*margin-top: 10px;*/
 }
 
 header h1 {
   color: #00A79D
+
 }
 
 header span {
   color: #6D6E71
 }
 
+form {
+  position: relative;
+  background-color: #E5F3F2;
+  height: 170px;
+}
+
 #save-button{
+  position: absolute;
+  right: 50%;
+  margin-right: -150px;
+  top: 160px;
   text-align: center;
-  background-color:#045E55;
-  height: 20px;
-  width: 100px;
+  background-color:#00A79D;
+  height: 30px;
+  width: 300px;
+  color: #FFFFFF;
 }
 
 #save-button:hover{
   background-color:#045E55;
+}
+
+
+header input {
+  height: 30px;
+  width: 300px;
+  position: absolute;
+}
+
+#title-input {
+  right: 50%;
+  margin-right: -150px;
+  top: 55px;
+}
+
+#body-input {
+  right: 50%;
+  margin-right: -150px;
+  top: 105px;
 }
