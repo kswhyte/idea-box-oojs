@@ -1,7 +1,10 @@
 var ideasList = [];
 
+$(document).ready (function () {
 ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
-console.log(ideasList); //remove this after testing
+writeIdeas(ideasList);
+});
+// this is not writing the ideasList back to the DOM
 
 function Idea(title, body) {
   this.title = title;
@@ -24,24 +27,30 @@ $('#body-input').keypress(function(event) {
   }
 });
 
-function storeIdea() {
-  localStorage.setItem('ideasList', JSON.stringify(ideasList));
-}
-
 function generateNewIdea(titleInput, bodyInput) {
   var idea = new Idea(titleInput, bodyInput);
   ideasList.unshift(idea);
-  renderIdeaToPage(idea);
   storeIdea();
+  renderIdeaToPage(idea);
   clearFields();
 }
 
-// function renderIdeaToPage(idea) {
-//   $('.idea-list').prepend('<li><h3 class="idea-title">' + idea.title + '</h3>' + '<button class="delete-idea"> x </button><break><p class="body-input">' + idea.body + '</p><break><section class="vote"><img id="upvote" src="./images/svg-images/upvote.svg" /><img id="down-vote" src="./images/svg-images/downvote.svg" /><p>quality:</p>' + idea.quality + '</section><break>');
-// }
+function storeIdea() {
+  localStorage.setItem('ideasList',JSON.stringify(ideasList));
+}
+
+function retrieveIdeas() {
+  localStorage.getItem('ideasList');
+}
+
+function writeIdeas() {
+  ideasList.forEach( function(idea) {
+    renderIdeaToPage(idea);
+  });
+}
 
 function renderIdeaToPage(idea) {
-  $('.idea-list').prepend('<li><h3 class="idea-title">' + idea.title + '</h3>' + '<button class="delete-idea"> x </button><p class="body-input">' + idea.body + '</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ' + idea.quality + '</p></section>');
+  $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"> x </button><p class="body-input"> ${idea.body}</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
 }
 
 function clearFields() {
@@ -50,30 +59,48 @@ function clearFields() {
   $('#search-bar').val('');
 }
 
-function deleteIdea(idea){
-  localStorage.removeItem(idea);
-}
-
 $('.idea-list').on('click', '.delete-idea', function() {
-  deleteIdea(); //need to access value of id and remove it from array
+  debugger;
+  deleteIdea($(this).siblings(localStorage.getItem('id'))); //need to access value of id and remove it from array
   $(this).parent().remove();
 });
 
+function deleteIdea(ideaId) {
+  localStorage.removeItem(ideaId);
+}
+
+function findIdea(id) {
+  return ideasList.find(function(idea){
+    return idea.id === parseInt(id)
+  });
+}
 
 $('.idea-list').on('click', '.upvote', function() {
-  if ($('.quality-control').text('quality: swill')) {
-    $(this).siblings('.quality-control').text('quality: plausible');
-  } else if ($('.quality-control').text('quality: plausible')) {
-    $(this).siblings('.quality-control').text('quality: genius');
-  } //will not change to genius from plausible
+  var idea = findIdea($(this).parent().parent().attr('id'));
+  var $quality = $(this).siblings('p');
+
+  if ($quality.text() === 'quality: swill') {
+     $quality.text('quality: plausible');
+     idea.quality = 'plausible'
+  } else if ($quality.text() === 'quality: plausible') {
+     $quality.text('quality: genius');
+     idea.quality = 'genius';
+  };
+  storeIdea()
 });
 
 $('.idea-list').on('click', '.downvote', function() {
-  if ($('.quality-control').text('quality: genius')) {
-    $(this).siblings('.quality-control').text('quality: plausible');
-  } else if ($('.quality-control').text('quality: plausible')) {
-    $(this).siblings('.quality-control').text('quality: swill');
-  }
+  var idea = findIdea($(this).parent().parent().attr('id'));
+  var $quality = $(this).siblings('p');
+
+  if ($quality.text() === 'quality: genius') {
+    $quality.text('quality: plausible');
+    idea.quality = 'plausible'
+  } else if ($quality.text() === 'quality: plausible') {
+    $quality.text('quality: swill');
+    idea.quality = 'swill';
+  };
+  storeIdea()
 });
 
 
