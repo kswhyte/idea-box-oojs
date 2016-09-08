@@ -40,7 +40,7 @@ function storeIdea() {
 }
 
 function retrieveIdeas() {
-  localStorage.getItem('ideasList', JSON.parse(ideasList));
+  localStorage.getItem('ideasList');
 }
 
 function writeIdeas() {
@@ -50,7 +50,7 @@ function writeIdeas() {
 }
 
 function renderIdeaToPage(idea) {
-  $('.idea-list').prepend('<li><h3 class="idea-title" data="' + idea.id + '">' + idea.title + '</h3>' + '<button class="delete-idea"> x </button><p class="body-input">' + idea.body + '</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ' + idea.quality + '</p></section>');
+  $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"> x </button><p class="body-input"> ${idea.body}</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
 }
 
 function clearFields() {
@@ -69,21 +69,38 @@ function deleteIdea(ideaId) {
   localStorage.removeItem(ideaId);
 }
 
+function findIdea(id) {
+  return ideasList.find(function(idea){
+    return idea.id === parseInt(id)
+  });
+}
 
 $('.idea-list').on('click', '.upvote', function() {
-  if ($('.quality-control').text('quality: swill')) {
-    $(this).siblings('.quality-control').text('quality: plausible');
-  } else if ($('.quality-control').text('quality: plausible')) {
-    $(this).siblings('.quality-control').text('quality: genius');
-  } //will not change to genius from plausible
+  var idea = findIdea($(this).parent().parent().attr('id'));
+  var $quality = $(this).siblings('p');
+
+  if ($quality.text() === 'quality: swill') {
+     $quality.text('quality: plausible');
+     idea.quality = 'plausible'
+  } else if ($quality.text() === 'quality: plausible') {
+     $quality.text('quality: genius');
+     idea.quality = 'genius';
+  };
+  storeIdea()
 });
 
 $('.idea-list').on('click', '.downvote', function() {
-  if ($('.quality-control').text('quality: genius')) {
-    $(this).siblings('.quality-control').text('quality: plausible');
-  } else if ($('.quality-control').text('quality: plausible')) {
-    $(this).siblings('.quality-control').text('quality: swill');
-  } //will not change to swill from plausible
+  var idea = findIdea($(this).parent().parent().attr('id'));
+  var $quality = $(this).siblings('p');
+
+  if ($quality.text() === 'quality: genius') {
+    $quality.text('quality: plausible');
+    idea.quality = 'plausible'
+  } else if ($quality.text() === 'quality: plausible') {
+    $quality.text('quality: swill');
+    idea.quality = 'swill';
+  };
+  storeIdea()
 });
 
 
