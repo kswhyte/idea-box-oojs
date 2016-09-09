@@ -4,7 +4,6 @@ $(document).ready (function () {
 ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
 writeIdeas(ideasList);
 });
-// this is not writing the ideasList back to the DOM
 
 function Idea(title, body) {
   this.id = Date.now();
@@ -17,6 +16,7 @@ $('#save-button').on('click', function() {
   var titleInput = $('#title-input').val();
   var bodyInput = $('#body-input').val();
   generateNewIdea(titleInput, bodyInput);
+  $('#title-input').focus();
 });
 
 $('#body-input').keypress(function(event) {
@@ -24,6 +24,7 @@ $('#body-input').keypress(function(event) {
     var titleInput = $('#title-input').val();
     var bodyInput = $('#body-input').val();
     generateNewIdea(titleInput, bodyInput);
+    $('#title-input').focus();
   }
 });
 
@@ -31,21 +32,21 @@ function generateNewIdea(titleInput, bodyInput) {
   var idea = new Idea(titleInput, bodyInput);
   ideasList.unshift(idea);
   storeIdea();
-  renderIdeaToPage(idea);
+  renderIdeaToHTML(idea);
   clearFields();
 }
 
 function storeIdea() {
-  localStorage.setItem('ideasList',JSON.stringify(ideasList));
+  localStorage.setItem('ideasList', JSON.stringify(ideasList));
 }
 
-function writeIdeas() {
+function writeIdeas(ideasList) {
   ideasList.forEach(function(idea) {
-    renderIdeaToPage(idea);
+    renderIdeaToHTML(idea);
   });
 }
 
-function renderIdeaToPage(idea) {
+function renderIdeaToHTML(idea) {
   $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"> x </button><p class="body-input"> ${idea.body}</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
 } //see error here. do we have the es6 library?
 
@@ -55,18 +56,33 @@ function clearFields() {
   $('#search-bar').val('');
 }
 
-function retrieveIdeas() {
-  localStorage.getItem('ideasList');
-} //where is this function being called?
-
-$('.idea-list').on('click', '.delete-idea', function() {
-  // debugger;
-  deleteIdea($(this).siblings(localStorage.getItem('id'))); //need to access value of id and remove it from array
+$('.idea-list').on('click', '.delete-idea', function(){
+  var id = $(this).parent().attr('id');
+  var idea =  findIdea(id);
+  deleteIdeaFromStorage(idea);
   $(this).parent().remove();
+  // storeIdea();
 });
 
-function deleteIdea(ideaId) {
-  localStorage.removeItem(ideaId);
+function findIdea(id) {
+  return ideasList.find(function(idea) {
+    return idea.id === parseInt(id);
+  });
+}
+
+function deleteIdeaFromStorage(idea) {
+  ideasList = ideasList.filter(function(ideasToKeep) {
+    return ideasToKeep != idea;
+  });
+  localStorage.removeItem(idea);
+  // set this
+  updateIdeasList(ideasList);
+  // localStorage.removeItem(idea);
+}
+
+function updateIdeasList(ideasList) {
+  localStorage.setItem('ideasList', JSON.stringify(ideasList));
+  writeIdeas(ideasList);
 }
 
 $('.idea-list').on('click', '.upvote', function() {
@@ -97,11 +113,6 @@ $('.idea-list').on('click', '.downvote', function() {
   storeIdea();
 });
 
-function findIdea(id) {
-  return ideasList.find(function(idea){
-    return idea.id === parseInt(id);
-  });
-}
 
 $( "#search-bar" ).keyup(function() {
   console.log(); //do we want this console.log() function here?
