@@ -115,10 +115,16 @@ $('.idea-list').on('click', '.downvote', function() {
 // }
 
 
+$( "#search-bar" ).keyup(function() {
+  console.log()
+  var filterWord = $(this).val();
+  var notTheIdeasIWant = $( "li:not(:contains(" + filterWord + "))" );
+  var theIdeaIWant = $("li:contains(" + filterWord + ")"
+  );
+  theIdeaIWant.show();
+  notTheIdeasIWant.hide();
+});
 
 
-//To DO:
-// get the array out of local storage on page load
-// write any ideas in the array to page on load
-
-// $( window ).load(function() { ... })
+// theIdeaIWant.show().next("dd").show();
+// notTheIdeasIWant.hide().next("dd").hide();
