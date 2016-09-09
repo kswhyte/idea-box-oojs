@@ -7,9 +7,9 @@ writeIdeas(ideasList);
 // this is not writing the ideasList back to the DOM
 
 function Idea(title, body) {
+  this.id = Date.now();
   this.title = title;
   this.body = body;
-  this.id = Date.now();
   this.quality = 'swill';
 }
 
@@ -39,19 +39,15 @@ function storeIdea() {
   localStorage.setItem('ideasList',JSON.stringify(ideasList));
 }
 
-function retrieveIdeas() {
-  localStorage.getItem('ideasList');
-}
-
 function writeIdeas() {
-  ideasList.forEach( function(idea) {
+  ideasList.forEach(function(idea) {
     renderIdeaToPage(idea);
   });
 }
 
 function renderIdeaToPage(idea) {
   $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"> x </button><p class="body-input"> ${idea.body}</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
-}
+} //see error here. do we have the es6 library?
 
 function clearFields() {
   $('#title-input').val('');
@@ -59,8 +55,12 @@ function clearFields() {
   $('#search-bar').val('');
 }
 
+function retrieveIdeas() {
+  localStorage.getItem('ideasList');
+} //where is this function being called?
+
 $('.idea-list').on('click', '.delete-idea', function() {
-  debugger;
+  // debugger;
   deleteIdea($(this).siblings(localStorage.getItem('id'))); //need to access value of id and remove it from array
   $(this).parent().remove();
 });
@@ -69,24 +69,18 @@ function deleteIdea(ideaId) {
   localStorage.removeItem(ideaId);
 }
 
-function findIdea(id) {
-  return ideasList.find(function(idea){
-    return idea.id === parseInt(id)
-  });
-}
-
 $('.idea-list').on('click', '.upvote', function() {
   var idea = findIdea($(this).parent().parent().attr('id'));
   var $quality = $(this).siblings('p');
 
   if ($quality.text() === 'quality: swill') {
      $quality.text('quality: plausible');
-     idea.quality = 'plausible'
+     idea.quality = 'plausible';
   } else if ($quality.text() === 'quality: plausible') {
      $quality.text('quality: genius');
      idea.quality = 'genius';
-  };
-  storeIdea()
+  }
+  storeIdea();
 });
 
 $('.idea-list').on('click', '.downvote', function() {
@@ -95,28 +89,22 @@ $('.idea-list').on('click', '.downvote', function() {
 
   if ($quality.text() === 'quality: genius') {
     $quality.text('quality: plausible');
-    idea.quality = 'plausible'
+    idea.quality = 'plausible';
   } else if ($quality.text() === 'quality: plausible') {
     $quality.text('quality: swill');
     idea.quality = 'swill';
-  };
-  storeIdea()
+  }
+  storeIdea();
 });
 
-
-
-
-// $('.linked-list').on('click', '.mark-as-read-button', markAsRead);
-//
-// function markAsRead() {
-//   $(this).parent().toggleClass('read');
-//   countTotals();
-//   clearReadButtonToggle();
-// }
-
+function findIdea(id) {
+  return ideasList.find(function(idea){
+    return idea.id === parseInt(id);
+  });
+}
 
 $( "#search-bar" ).keyup(function() {
-  console.log()
+  console.log(); //do we want this console.log() function here?
   var filterWord = $(this).val();
   var notTheIdeasIWant = $( "li:not(:contains(" + filterWord + "))" );
   var theIdeaIWant = $("li:contains(" + filterWord + ")"
