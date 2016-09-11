@@ -97,7 +97,7 @@ header input {
 .delete-idea {
   background: url('../images/svg-images/delete.svg') no-repeat;
   display: inline-block;
-  margin: 0px 10px;
+  margin: 0;
   float: right;
 }
 
