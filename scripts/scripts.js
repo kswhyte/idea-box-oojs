@@ -2,6 +2,7 @@ var ideasList = [];
 
 $(document).ready(function() {
 ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
+// var sortedIdeasList = ideasList.sort(function(a, b) {return b-a});
 writeIdeas(ideasList);
 });
 
@@ -31,7 +32,7 @@ $('#body-input').keypress(function(event) {
 
 function generateNewIdea(titleInput, bodyInput) {
   var idea = new Idea(titleInput, bodyInput);
-  ideasList.unshift(idea);
+  ideasList.push(idea);
   storeIdea();
   renderIdeaToHTML(idea);
   clearFields();
