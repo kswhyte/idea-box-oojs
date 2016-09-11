@@ -13,9 +13,13 @@
   color: #6D6E71;
 }
 
-header {
-  background-color: #E5F3F2
+.idea-form {
+  position: relative;
   height: 150px;
+}
+
+header {
+  background-color: #E5F3F2;
 }
 
 header h1, span {
@@ -23,12 +27,23 @@ header h1, span {
   font-weight: 700;
   font-size: 50px;
   text-align: center;
+
+  /*position:relative;*/
+  /*display: inline-block;*/
   /*margin-top: 10px;*/
 }
 
-header h1 {
-  color: #00A79D
+.idea-text {
+  color: #00A79D;
+}
 
+span {
+  margin-top: 30px;
+  display: inline-block;
+}
+
+.input-and-save-button {
+  background-color: yellow;
 }
 
 header span {
@@ -36,16 +51,18 @@ header span {
 }
 
 form {
-  position: relative;
+  /*position: absolute;*/
   background-color: #E5F3F2;
   height: 170px;
 }
 
 #save-button{
-  position: absolute;
-  right: 50%;
+  position: relative;
+  /*right: 50%;*/
+  /*margin-right: -150px;*/
+  top: 90px;
+  left: 27%;
   margin-right: -150px;
-  top: 160px;
   text-align: center;
   background-color:#00A79D;
   height: 30px;
@@ -60,7 +77,7 @@ form {
 
 
 header input {
-  height: 30px;
+  height: 20px;
   width: 300px;
   position: absolute;
 }
@@ -68,13 +85,13 @@ header input {
 #title-input {
   right: 50%;
   margin-right: -150px;
-  top: 55px;
+  top: 15px;
 }
 
 #body-input {
   right: 50%;
   margin-right: -150px;
-  top: 105px;
+  top: 52px;
 }
 
 .upvote {

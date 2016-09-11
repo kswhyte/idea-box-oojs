@@ -41,9 +41,10 @@ function storeIdea() {
 }
 
 function writeIdeas(ideasList) {
-  ideasList.forEach(function(idea) {
+  var reverseIdeasList = ideasList.reverse()
+  reverseIdeasList.forEach(function(idea) {
     renderIdeaToHTML(idea);
-  });
+  }); // had to do reverse, otherwise would print in chronological order on refresh
 }
 
 function renderIdeaToHTML(idea) {
