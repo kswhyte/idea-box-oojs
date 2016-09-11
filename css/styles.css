@@ -1,10 +1,25 @@
-body {
+.idea-title {
+  font-family: 'Roboto Slab', serif;
+  color: #6D6E71;
+}
+
+.body-input {
   font-family: 'Open Sans', sans-serif;
+  color: #939598;
+}
+
+.quality-control {
+  font-family: 'Roboto Slab', serif;
+  color: #6D6E71;
+}
+
+.idea-form {
+  position: relative;
+  height: 150px;
 }
 
 header {
-  background-color: #E5F3F2
-  height: 150px;
+  background-color: #E5F3F2;
 }
 
 header h1, span {
@@ -12,12 +27,23 @@ header h1, span {
   font-weight: 700;
   font-size: 50px;
   text-align: center;
+
+  /*position:relative;*/
+  /*display: inline-block;*/
   /*margin-top: 10px;*/
 }
 
-header h1 {
-  color: #00A79D
+.idea-text {
+  color: #00A79D;
+}
 
+span {
+  margin-top: 30px;
+  display: inline-block;
+}
+
+.input-and-save-button {
+  background-color: yellow;
 }
 
 header span {
@@ -25,30 +51,38 @@ header span {
 }
 
 form {
-  position: relative;
+  /*position: absolute;*/
   background-color: #E5F3F2;
   height: 170px;
 }
 
 #save-button{
-  position: absolute;
-  right: 50%;
+  position: relative;
+  border: none;
+  top: 90px;
+  left: 38%;
   margin-right: -150px;
-  top: 160px;
   text-align: center;
   background-color:#00A79D;
   height: 30px;
   width: 300px;
   color: #FFFFFF;
+  cursor: pointer;
 }
 
 #save-button:hover{
   background-color:#045E55;
 }
 
+#search-bar {
+  position: relative;
+  left: 185px;
+  width: 300px;
+  margin-top: 20px;
+}
 
 header input {
-  height: 30px;
+  height: 20px;
   width: 300px;
   position: absolute;
 }
@@ -56,15 +90,49 @@ header input {
 #title-input {
   right: 50%;
   margin-right: -150px;
-  top: 55px;
+  top: 15px;
 }
 
 #body-input {
   right: 50%;
   margin-right: -150px;
-  top: 105px;
+  top: 52px;
 }
 
+.upvote {
+  background: url('../images/svg-images/upvote.svg') no-repeat;
+  height: 35px;
+  width: 35px;
+  display: inline-block;
+  border: none;
+  cursor: pointer;
+}
 
-/*src="./images/svg-images/downvote.svg"*/
-/*src="./images/svg-images/upvote.svg"/*/
+.downvote {
+  background: url('../images/svg-images/downvote.svg') no-repeat;
+  height: 35px;
+  width: 35px;
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.downvote
+
+.delete-idea {
+  background: url('../images/svg-images/delete.svg') no-repeat;
+  height: 35px;
+  width: 35px;
+  border: none;
+  display: inline-block;
+  cursor: pointer;
+}
+
+ li {
+   list-style: none;
+   border-bottom: 2px solid #D1D3D4
+ }
+
+@@media query {
+
+}

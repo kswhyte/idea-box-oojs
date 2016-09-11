@@ -1,9 +1,10 @@
 var ideasList = [];
 
-$(document).ready (function () {
+$(document).ready(function() {
 ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
 writeIdeas(ideasList);
 });
+
 
 function Idea(title, body) {
   this.id = Date.now();
@@ -37,7 +38,7 @@ function generateNewIdea(titleInput, bodyInput) {
 }
 
 function storeIdea() {
-  localStorage.setItem('ideasList', JSON.stringify(ideasList));
+  localStorage.setItem("ideasList", JSON.stringify(ideasList));
 }
 
 function writeIdeas(ideasList) {
@@ -47,8 +48,9 @@ function writeIdeas(ideasList) {
 }
 
 function renderIdeaToHTML(idea) {
-  $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"> x </button><p class="body-input"> ${idea.body}</p><section class="vote"><button type="button" class="upvote"></button><button type="button" class="downvote"></button><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
-} //see error here. do we have the es6 library?
+  $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"></button><p class="body-input"> ${idea.body}</p><section class="vote"><button class="upvote"></button><article class="downvote"></article><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
+  // storeIdea();
+}
 
 function clearFields() {
   $('#title-input').val('');
@@ -61,7 +63,6 @@ $('.idea-list').on('click', '.delete-idea', function(){
   var idea =  findIdea(id);
   deleteIdeaFromStorage(idea);
   $(this).parent().remove();
-  // storeIdea();
 });
 
 function findIdea(id) {
@@ -75,9 +76,7 @@ function deleteIdeaFromStorage(idea) {
     return ideasToKeep != idea;
   });
   localStorage.removeItem(idea);
-  // set this
   updateIdeasList(ideasList);
-  // localStorage.removeItem(idea);
 }
 
 function updateIdeasList(ideasList) {
@@ -110,7 +109,6 @@ $('.idea-list').on('click', '.downvote', function() {
     $quality.text('quality: swill');
     idea.quality = 'swill';
   }
-  storeIdea();
 });
 
 
