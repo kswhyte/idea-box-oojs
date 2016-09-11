@@ -49,7 +49,7 @@ function writeIdeas(ideasList) {
 }
 
 function renderIdeaToHTML(idea) {
-  $('.idea-list').prepend(`<li id=${idea.id}><h3 class="idea-title">${idea.title}</h3><button class="delete-idea"></button><p class="body-input"> ${idea.body}</p><section class="vote"><button class="upvote"></button><article class="downvote"></article><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
+  $('.idea-list').prepend(`<li id=${idea.id}><h3 contenteditable="true" class="idea-title">${idea.title}</h3><button class="delete-idea"></button><p contenteditable="true" class="body-input"> ${idea.body}</p><section class="vote"><button class="upvote"></button><article class="downvote"></article><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
   // storeIdea();
 }
 
@@ -112,6 +112,35 @@ $('.idea-list').on('click', '.downvote', function() {
   }
 });
 
+// $('.idea-list').on('click', 'idea-title', function (){
+//   var idea = findIdea($(this).parent().parent().attr('id'));
+//   var ideaHTML = $('this').html();
+//   var editableIdeaHTML = ;
+//   localStorage.newContent = editedContent;
+//   // editableIdeaHTML.blur(editableIdeaHTMLBlurred);
+// });
+
+
+var theContent = $('#idea-title');
+
+$('.idea-list').on('blur','idea-title', function(){
+  var idea = findIdea($(this).parent().parent().attr('id'));
+  var theContent = $('this').html();
+  var editedContent = theContent.html();
+  localStorage.newContent = editedContent;
+
+  storeIdea();
+});
+
+// function editableIdeaHTMLBlurred () {
+//   var html = $(this).val();
+//   var viewableText = $('<h3>');
+//   viewableText.html(html);
+//   $(this).replaceWith(viewableText);
+//   $(viewableText).click(viewableText)
+//   $(viewableText).click(editIdeaTitle);
+// }
+
 
 $( "#search-bar" ).keyup(function() {
   console.log(); //do we want this console.log() function here?
@@ -122,7 +151,3 @@ $( "#search-bar" ).keyup(function() {
   theIdeaIWant.show();
   notTheIdeasIWant.hide();
 });
-
-
-// theIdeaIWant.show().next("dd").show();
-// notTheIdeasIWant.hide().next("dd").hide();
