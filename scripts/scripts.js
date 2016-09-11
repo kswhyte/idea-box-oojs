@@ -1,17 +1,15 @@
 var ideasList = [];
 
 $(document).ready(function() {
-ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
-// var sortedIdeasList = ideasList.sort(function(a, b) {return b-a});
-writeIdeas(ideasList);
+  ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
+  writeIdeas(ideasList);
 });
 
-
-function Idea(title, body) {
-  this.id = Date.now();
+function Idea(title, body, id, quality) {
+  this.id = id || Date.now() ;
   this.title = title;
   this.body = body;
-  this.quality = 'swill';
+  this.quality = quality || 'swill';
 }
 
 $('#save-button').on('click', function() {
@@ -50,7 +48,6 @@ function writeIdeas(ideasList) {
 
 function renderIdeaToHTML(idea) {
   $('.idea-list').prepend(`<li id=${idea.id}><h3 contenteditable="true" class="idea-title">${idea.title}</h3><button class="delete-idea"></button><p contenteditable="true" class="body-input"> ${idea.body}</p><section class="vote"><button class="upvote"></button><article class="downvote"></article><p class="quality-control">quality: ${idea.quality}</p></section></li>`);
-  // storeIdea();
 }
 
 function clearFields() {
@@ -58,6 +55,48 @@ function clearFields() {
   $('#body-input').val('');
   $('#search-bar').val('');
 }
+
+$('.idea-list').on('focusout', '.idea-title', function(){
+  var id = $(this).parent().attr('id');
+  var newTitle =  $(this).text();
+  updateTitle(id, newTitle);
+});
+
+$('.idea-list').on('keyup', '.idea-title', function(event) {
+  if (event.which == 13) {
+    $(this).focusout();
+  }
+});
+
+function updateTitle(id, newTitle) {
+  var idea = findIdea(id);
+  idea.title = newTitle;
+  storeIdea();
+}
+
+
+$('.idea-list').on('focusout', '.body-input', function(){
+  var id = $(this).parent().attr('id');
+  var newBody =  $(this).text();
+  updateBody(id, newBody);
+});
+
+$('.idea-list').on('keyup', '.body-input', function(event) {
+    var id = $(this).parent().attr('id');
+    var newBody = $(this).text();
+    if (event.which == 13) {
+        event.preventDefault();
+    updateBody(id, newBody);
+    $('.idea-list').focusout();
+  }
+});
+
+function updateBody(id, newBody) {
+  var idea = findIdea(id);
+  idea.body = newBody;
+  storeIdea();
+}
+
 
 $('.idea-list').on('click', '.delete-idea', function(){
   var id = $(this).parent().attr('id');
@@ -112,38 +151,7 @@ $('.idea-list').on('click', '.downvote', function() {
   }
 });
 
-// $('.idea-list').on('click', 'idea-title', function (){
-//   var idea = findIdea($(this).parent().parent().attr('id'));
-//   var ideaHTML = $('this').html();
-//   var editableIdeaHTML = ;
-//   localStorage.newContent = editedContent;
-//   // editableIdeaHTML.blur(editableIdeaHTMLBlurred);
-// });
-
-
-var theContent = $('#idea-title');
-
-$('.idea-list').on('blur','idea-title', function(){
-  var idea = findIdea($(this).parent().parent().attr('id'));
-  var theContent = $('this').html();
-  var editedContent = theContent.html();
-  localStorage.newContent = editedContent;
-
-  storeIdea();
-});
-
-// function editableIdeaHTMLBlurred () {
-//   var html = $(this).val();
-//   var viewableText = $('<h3>');
-//   viewableText.html(html);
-//   $(this).replaceWith(viewableText);
-//   $(viewableText).click(viewableText)
-//   $(viewableText).click(editIdeaTitle);
-// }
-
-
 $( "#search-bar" ).keyup(function() {
-  console.log(); //do we want this console.log() function here?
   var filterWord = $(this).val();
   var notTheIdeasIWant = $( "li:not(:contains(" + filterWord + "))" );
   var theIdeaIWant = $("li:contains(" + filterWord + ")"
