@@ -58,10 +58,9 @@ form {
 
 #save-button{
   position: relative;
-  /*right: 50%;*/
-  /*margin-right: -150px;*/
+  border: none;
   top: 90px;
-  left: 27%;
+  left: 38%;
   margin-right: -150px;
   text-align: center;
   background-color:#00A79D;
@@ -75,6 +74,12 @@ form {
   background-color:#045E55;
 }
 
+#search-bar {
+  position: relative;
+  left: 185px;
+  width: 300px;
+  margin-top: 20px;
+}
 
 header input {
   height: 20px;
@@ -112,6 +117,8 @@ header input {
   cursor: pointer;
 }
 
+.downvote
+
 .delete-idea {
   background: url('../images/svg-images/delete.svg') no-repeat;
   height: 35px;
@@ -125,3 +132,7 @@ header input {
    list-style: none;
    border-bottom: 2px solid #D1D3D4
  }
+
+@@media query {
+
+}
