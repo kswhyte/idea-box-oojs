@@ -82,11 +82,11 @@ $('.idea-list').on('focusout', '.body-input', function(){
 });
 
 $('.idea-list').on('keyup', '.body-input', function(event) {
-  if (event.which == 13) {
     var id = $(this).parent().attr('id');
     var newBody = $(this).text();
+    if (event.which == 13) {
+        event.preventDefault();
     updateBody(id, newBody);
-    event.stopPropagation();
     $('.idea-list').focusout();
   }
 });
