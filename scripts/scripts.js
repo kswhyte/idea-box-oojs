@@ -5,7 +5,7 @@ $(document).ready(function() {
   writeIdeas(ideasList);
 });
 
-function Idea(id, title, body, quality) {
+function Idea(title, body, id, quality) {
   this.id = id || Date.now() ;
   this.title = title;
   this.body = body;
@@ -28,7 +28,7 @@ $('#body-input').keypress(function(event) {
   }
 });
 
-function generateNewIdea(id, titleInput, bodyInput, quality) {
+function generateNewIdea(titleInput, bodyInput) {
   var idea = new Idea(titleInput, bodyInput);
   ideasList.push(idea);
   storeIdea();
@@ -83,7 +83,11 @@ $('.idea-list').on('focusout', '.body-input', function(){
 
 $('.idea-list').on('keyup', '.body-input', function(event) {
   if (event.which == 13) {
-    $(this).focusout();
+    var id = $(this).parent().attr('id');
+    var newBody = $(this).text();
+    updateBody(id, newBody);
+    event.stopPropagation();
+    $('.idea-list').focusout();
   }
 });
 
@@ -92,7 +96,6 @@ function updateBody(id, newBody) {
   idea.body = newBody;
   storeIdea();
 }
-
 
 
 $('.idea-list').on('click', '.delete-idea', function(){
