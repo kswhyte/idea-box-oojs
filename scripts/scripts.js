@@ -77,7 +77,6 @@ function updateTitle(id, newTitle) {
   storeIdea();
 }
 
-
 $('.idea-list').on('focusout', '.body-input', function(){
   var id = $(this).parent().attr('id');
   var newBody =  $(this).text();
@@ -98,7 +97,6 @@ function updateBody(id, newBody) {
   idea.body = newBody;
   storeIdea();
 }
-
 
 $('.idea-list').on('click', '.delete-idea', function(){
   var id = $(this).parent().attr('id');
@@ -151,6 +149,7 @@ $('.idea-list').on('click', '.downvote', function() {
     $quality.text('quality: swill');
     idea.quality = 'swill';
   }
+  storeIdea();
 });
 
 $( "#search-bar" ).keyup(function() {
