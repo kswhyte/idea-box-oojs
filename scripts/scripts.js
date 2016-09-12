@@ -5,13 +5,6 @@ $(document).ready(function() {
   writeIdeas(ideasList);
 });
 
-function Idea(title, body, id, quality) {
-  this.id = id || Date.now() ;
-  this.title = title;
-  this.body = body;
-  this.quality = quality || 'swill';
-}
-
 $('#save-button').on('click', function() {
   var titleInput = $('#title-input').val();
   var bodyInput = $('#body-input').val();
@@ -28,6 +21,19 @@ $('#body-input').keypress(function(event) {
   }
 });
 
+function Idea(title, body, id, quality) {
+  this.id = id || Date.now() ;
+  this.title = title;
+  this.body = body;
+  this.quality = quality || 'swill';
+}
+
+function writeIdeas(ideasList) {
+  ideasList.forEach(function(idea) {
+    renderIdeaToHTML(idea);
+  });
+}
+
 function generateNewIdea(titleInput, bodyInput) {
   var idea = new Idea(titleInput, bodyInput);
   ideasList.push(idea);
@@ -38,12 +44,6 @@ function generateNewIdea(titleInput, bodyInput) {
 
 function storeIdea() {
   localStorage.setItem("ideasList", JSON.stringify(ideasList));
-}
-
-function writeIdeas(ideasList) {
-  ideasList.forEach(function(idea) {
-    renderIdeaToHTML(idea);
-  });
 }
 
 function renderIdeaToHTML(idea) {
@@ -67,8 +67,8 @@ $('.idea-list').on('keypress', '.idea-title', function(event) {
   var newTitle = $(this).text();
   if (event.which == 13) {
       event.preventDefault();
-  $(this).blur();
-}
+      $(this).blur();
+    }
 });
 
 function updateTitle(id, newTitle) {
@@ -84,11 +84,11 @@ $('.idea-list').on('focusout', '.body-input', function(){
 });
 
 $('.idea-list').on('keypress', '.body-input', function(event) {
-    var id = $(this).parent().attr('id');
-    var newBody = $(this).text();
-    if (event.which == 13) {
-        event.preventDefault();
-    $(this).blur();
+  var id = $(this).parent().attr('id');
+  var newBody = $(this).text();
+  if (event.which == 13) {
+      event.preventDefault();
+      $(this).blur();
   }
 });
 
@@ -121,7 +121,6 @@ function deleteIdeaFromStorage(idea) {
 
 function updateIdeasList(ideasList) {
   localStorage.setItem('ideasList', JSON.stringify(ideasList));
-  // writeIdeas(ideasList);
   storeIdea();
 }
 
@@ -155,8 +154,8 @@ $('.idea-list').on('click', '.downvote', function() {
 
 $( "#search-bar" ).keyup(function() {
   var filterWord = $(this).val();
-  var notTheIdeasIWant = $( "li:not(:contains(" + filterWord + "))" );
-  var theIdeaIWant = $("li:contains(" + filterWord + ")"
+  var notTheIdeasIWant = $( 'li:not(:contains(' + filterWord + '))' );
+  var theIdeaIWant = $('li:contains(' + filterWord + ')'
   );
   theIdeaIWant.show();
   notTheIdeasIWant.hide();
