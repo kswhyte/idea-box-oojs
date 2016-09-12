@@ -62,10 +62,13 @@ $('.idea-list').on('focusout', '.idea-title', function(){
   updateTitle(id, newTitle);
 });
 
-$('.idea-list').on('keyup', '.idea-title', function(event) {
+$('.idea-list').on('keypress', '.idea-title', function(event) {
+  var id = $(this).parent().attr('id');
+  var newTitle = $(this).text();
   if (event.which == 13) {
-    $(this).focusout();
-  }
+      event.preventDefault();
+  $(this).blur();
+}
 });
 
 function updateTitle(id, newTitle) {
@@ -81,13 +84,12 @@ $('.idea-list').on('focusout', '.body-input', function(){
   updateBody(id, newBody);
 });
 
-$('.idea-list').on('keyup', '.body-input', function(event) {
+$('.idea-list').on('keypress', '.body-input', function(event) {
     var id = $(this).parent().attr('id');
     var newBody = $(this).text();
     if (event.which == 13) {
         event.preventDefault();
-    updateBody(id, newBody);
-    $('.idea-list').focusout();
+    $(this).blur();
   }
 });
 
