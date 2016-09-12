@@ -121,7 +121,8 @@ function deleteIdeaFromStorage(idea) {
 
 function updateIdeasList(ideasList) {
   localStorage.setItem('ideasList', JSON.stringify(ideasList));
-  writeIdeas(ideasList);
+  // writeIdeas(ideasList);
+  storeIdea();
 }
 
 $('.idea-list').on('click', '.upvote', function() {
