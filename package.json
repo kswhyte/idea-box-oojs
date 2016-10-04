@@ -1,0 +1,38 @@
+{
+  "name": "2dobox-pivot",
+  "version": "1.0.0",
+  "description": "revamps old ideabox into a todo list app",
+  "main": "index.js",
+  "scripts": {
+    "test": "todo-test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kswhyte/2DoBox-Pivot.git"
+  },
+  "keywords": [
+    "todo",
+    "list"
+  ],
+  "author": "kinan whyte ian lancaster",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kswhyte/2DoBox-Pivot/issues"
+  },
+  "homepage": "https://github.com/kswhyte/2DoBox-Pivot#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.0",
+    "mocha-loader": "^1.0.0",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.1"
+  }
+}
+
+...
+"scripts": {
+  "start": "webpack-dev-server --hot --inline",
+  "build": "webpack",
+  "test": "mocha"
+},
+...
