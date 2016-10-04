@@ -20,7 +20,3 @@ module.exports = {
     extensions: ['', '.js', '.json', '.scss', '.css']
   }
 };
-
-resolve: {
-  extensions: ['', '.js', '.json', '.scss', 'css']
-}
