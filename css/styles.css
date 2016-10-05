@@ -76,7 +76,7 @@ header input {
 
 /*________________________________*/
 
- li {
+.idea-list section {
    margin: auto;
    list-style: none;
    width: 400px;
@@ -192,7 +192,7 @@ header input {
   }
 
   /*________________________*/
-  li {
+  .idea-list section {
     width: 300px;
   }
 
