@@ -55,7 +55,7 @@
 
 	const $ = __webpack_require__(2);
 	const controller = __webpack_require__(3);
-	const idea = __webpack_require__(4);
+	const Idea = __webpack_require__(4);
 	const ideaBox = __webpack_require__(5);
 
 	const dom = {
@@ -68,29 +68,25 @@
 
 	$(document).ready(function () {
 	  controller.documentReady();
-	  console.log(ideabox.ideasList);
 	});
 
 	$('#save-button').on('click', function () {
-	  var titleInput = $('#title-input').val();
-	  var bodyInput = $('#body-input').val();
-	  generateNewIdea(titleInput, bodyInput);
-	  $('#title-input').focus();
+	  ideaBox.saveButtonClick(dom.$titleInput.val(), dom.$bodyInput.val());
+	  controller.saveButtonClick();
 	});
 
 	$('#body-input').keypress(function (event) {
 	  if (event.which == 13) {
-	    var titleInput = $('#title-input').val();
-	    var bodyInput = $('#body-input').val();
-	    generateNewIdea(titleInput, bodyInput);
+	    ideaBox.addIdeaToList(idea.id, dom.$titleInput.val(), dom.$bodyInput.val());
+	    controller.saveButtonClick();
 	    $('#title-input').focus();
 	  }
 	});
 
 	$('.idea-list').on('focusout', '.idea-title', function () {
-	  var id = $(this).parent().attr('id');
-	  var newTitle = $(this).text();
-	  updateTitle(id, newTitle);
+	  var $id = $(this).parent().attr('id');
+	  var $newTitle = $(this).text();
+	  Idea.updateTitle($id, $newTitle);
 	});
 
 	$('.idea-list').on('keypress', '.idea-title', function (event) {
@@ -103,9 +99,9 @@
 	});
 
 	$('.idea-list').on('focusout', '.body-input', function () {
-	  var id = $(this).parent().attr('id');
-	  var newBody = $(this).text();
-	  updateBody(id, newBody);
+	  var $id = $(this).parent().attr('id');
+	  var $newBody = $(this).text();
+	  Idea.updateBody($id, $newBody);
 	});
 
 	$('.idea-list').on('keypress', '.body-input', function (event) {
@@ -119,8 +115,8 @@
 
 	$('.idea-list').on('click', '.delete-idea', function () {
 	  var id = $(this).parent().attr('id');
-	  var idea = findIdea(id);
-	  deleteIdeaFromStorage(idea);
+	  var idea = ideabox.findIdea(id);
+	  controller.deleteIdeaFromStorage(idea);
 	  $(this).parent().remove();
 	});
 
@@ -1802,31 +1798,27 @@
 
 /***/ },
 /* 3 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
+
+	const $ = __webpack_require__(2);
+	const Idea = __webpack_require__(4);
+	const ideaBox = __webpack_require__(5);
+	const dom = __webpack_require__(1);
 
 	const controller = {
 	  documentReady: function () {
-	    this.writeLSToModel();
+	    this.updateModelFromLS();
+	    this.renderModelToDom();
 	  },
 
-	  writeLSToModel: function () {
-	    ideasList = JSON.parse(localStorage.getItem('ideasList')) || [];
+	  saveButtonClick: function () {
+	    this.updateLSFromModel();
+	    this.renderModelToDom();
+	    this.clearFields();
 	  },
 
-	  writeIdeas: function (ideasList) {
-	    ideasList.forEach(function (idea) {
-	      renderIdeaToHTML(idea);
-	    });
-	  },
-
-	  storeIdea: function () {
-	    localStorage.setItem("ideasList", JSON.stringify(ideasList));
-	  },
-
-	  clearFields: function () {
-	    $('#title-input').val('');
-	    $('#body-input').val('');
-	    $('#search-bar').val('');
+	  ideaSearchInputKeyup: function () {
+	    this.renderModelToDom();
 	  },
 
 	  deleteIdeaFromStorage: function (idea) {
@@ -1834,43 +1826,115 @@
 	      return ideasToKeep != idea;
 	    });
 	    localStorage.removeItem(idea);
-	    updateIdeasList(ideasList);
+	    updateLSFromModel();
 	  },
 
-	  updateIdeasList: function (ideasList) {
-	    localStorage.setItem('ideasList', JSON.stringify(ideasList));
-	    storeIdea();
+	  removeIdeaButtonClick: function () {
+	    this.renderModelToDom();
+	    this.updateLSFromModel();
+	  },
+
+	  ideaPromoteButtonClick: function () {
+	    this.renderModelToDom();
+	    this.updateLSFromModel();
+	  },
+
+	  ideaDemoteButtonClick: function () {
+	    this.renderModelToDom();
+	    this.updateLSFromModel();
+	  },
+
+	  ideaTitleKeyup: function () {
+	    this.updateLSFromModel();
+	  },
+
+	  ideaBodyKeyup: function () {
+	    this.updateLSFromModel();
+	  },
+
+	  updateLSFromModel: function () {
+	    localStorage.setItem("ideasList", JSON.stringify(ideaBox.ideasList));
+	  },
+
+	  updateModelFromLS: function () {
+	    retrievedIdeasList = JSON.parse(localStorage.getItem('ideasList'));
+	    if (retrievedIdeasList) {
+	      ideaBox.ideasList = retrievedIdeasList.map(function (idea) {
+	        return new Idea(idea.title, idea.body, idea.quality, idea.id);
+	        console.log('ls exists = true');
+	      });
+	    }
+	  },
+
+	  renderModelToDom: function () {
+	    $('.idea-list').html('');
+	    ideaBox.ideasList.forEach(function (idea) {
+	      $('.idea-list').prepend(idea.renderIdeaToHTML());
+	    });
+	  },
+
+	  clearFields: function () {
+	    $('#title-input').val('');
+	    $('#body-input').val('');
+	    $('#search-bar').val('');
+	    $('#title-input').focus();
 	  }
 	};
 
 	module.exports = controller;
 
+	// writeIdeas: function(ideasList) {
+	//   ideaBox.ideasList.forEach(function(idea) {
+	//     renderIdeaToHTML(idea);
+	//   });
+	// },
+
+	// storeIdea: function() {
+	//   localStorage.setItem("ideasList", JSON.stringify(ideasList));
+	// },
+
+	// updateIdeasList: function(ideasList) {
+	//   localStorage.setItem('ideasList', JSON.stringify(ideasList));
+	//   updateLSFromModel();
+	// }
+
 /***/ },
 /* 4 */
 /***/ function(module, exports) {
 
-	function Idea(title, body, id, quality) {
-	  this.id = id || Date.now();
+	function Idea(title, body, quality = 'swill', id = Date.now()) {
+	  this.id = id;
 	  this.title = title;
 	  this.body = body;
-	  this.quality = quality || 'swill';
+	  this.quality = quality;
 	}
 
 	Idea.prototype = {
 	  renderIdeaToHTML: function (idea) {
-	    $('.idea-list').prepend(`<li id=${ idea.id }><h3 contenteditable="true" class="idea-title">${ idea.title }</h3><button class="delete-idea"></button><p contenteditable="true" class="body-input"> ${ idea.body }</p><section class="vote"><button class="upvote"></button><article class="downvote"></article><p class="quality-control">quality: ${ idea.quality }</p></section></li>`);
+	    return `
+	      <section id=${ this.id }>
+	        <h3 contenteditable="true" class="idea-title">${ this.title }</h3>
+	        <button class="delete-idea"></button>
+	        <p contenteditable="true" class="body-input"> ${ this.body }</p>
+	        <div class="vote">
+	          <button class="upvote"></button>
+	          <article class="downvote"></article>
+	          <p class="quality-control">quality:${ this.quality }</p>
+	        </div>
+	      </section>
+	    `;
 	  },
 
 	  updateTitle: function (id, newTitle) {
-	    var idea = findIdea(id);
+	    var idea = ideaBox.findIdea(id);
 	    idea.title = newTitle;
-	    storeIdea();
+	    controller.updateLSFromModel();
 	  },
 
 	  updateBody: function (id, newBody) {
-	    var idea = findIdea(id);
+	    var idea = ideaBox.findIdea(id);
 	    idea.body = newBody;
-	    storeIdea();
+	    controller.updateLSFromModel();
 	  },
 
 	  updateQuality: function () {
@@ -1895,26 +1959,19 @@
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
+
+	const Idea = __webpack_require__(4);
 
 	const ideaBox = {
 	  ideasList: [],
-	  generateNewIdea: function (titleInput, bodyInput) {
-	    var idea = new Idea(titleInput, bodyInput);
-	    ideasList.push(idea);
-	    storeIdea();
-	    renderIdeaToHTML(idea);
-	    clearFields();
+	  saveButtonClick: function (titleText, bodyText) {
+	    this.addIdea(titleText, bodyText);
 	  },
-
-	  findIdea: function (id) {
-	    return ideasList.find(function (idea) {
-	      return idea.id === parseInt(id);
-	    });
+	  addIdea: function (titleInput, bodyInput) {
+	    let idea = new Idea(titleInput, bodyInput);
+	    this.ideasList.push(idea);
 	  },
-
-	  addIdea: function () {},
-
 	  removeIdea: function () {}
 	};
 
