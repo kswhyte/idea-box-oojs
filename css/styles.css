@@ -221,4 +221,8 @@ header input {
     font-size: 14px;
     padding-top: 4px;
   }
+
+  .quality-choice {
+    font-family: 'Open Sans', sans-serif;
+  }
 }
