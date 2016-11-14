@@ -8,6 +8,6 @@ We wanted to re-architect the codebase to be able to accomodate for higher level
 You can start saving your brilliant ideas and saving them in the same great [ideaBox](https://kswhyte.github.io/idea-box-oojs/), but this time with different guts under the hood.
 
 ---
-See the [Original IdeaBox](https://github.com/kswhyte/idea-box/blob/master/README.md) and information about both below
+See the [Original ideaBox](https://github.com/kswhyte/idea-box/blob/master/README.md) and find information about original intentions and goals.
 
 
