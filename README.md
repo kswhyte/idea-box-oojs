@@ -1,4 +1,4 @@
-# IdeaBox -- OOJS
+# IdeaBox - OOJS
 
 In this project, I built a simple application for recording and archiving our ideas (good and bad alike). However, this rendition includes a much different, and perhaps more effective, approach to organizing the internal structure of the codebase. Throughout the original project, one of my focuses was on providing a fluid and responsive client-side interface. This version represents an attempt to refactor a one page script into multiple classes and components that could handle and know about only specific tasks related to their purpose.
 
